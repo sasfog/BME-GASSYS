@@ -9,11 +9,7 @@ import java.util.Date;
 
 @Data
 @AllArgsConstructor
-public class UserDTO {
-
-    @NotNull
-    @NotEmpty
-    private Integer id;
+public class UserRegistrationDTO {
 
     @NotNull
     @NotEmpty
@@ -30,5 +26,4 @@ public class UserDTO {
     @NotNull
     @NotEmpty
     private String lastName;
-
 }

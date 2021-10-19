@@ -1,8 +1,12 @@
 package hu.bme.aut.gassys.user.presentation;
 
 
+import hu.bme.aut.gassys.user.UserRegistrationDTO;
 import hu.bme.aut.gassys.user.data.UserEntity;
 import hu.bme.aut.gassys.user.service.UserService;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -12,9 +16,14 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 import hu.bme.aut.gassys.user.UserDTO;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/api/user")
+@Slf4j
+@AllArgsConstructor
 public class UserController {
+
 
     private UserService userService;
 
@@ -33,9 +42,9 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO, UriComponentsBuilder builder){
+    public ResponseEntity<UserDTO> createUser(@RequestBody UserRegistrationDTO userRegistrationDTO, UriComponentsBuilder builder){
         try{
-            UserEntity userEntity = userService.create(userDTO);
+            UserEntity userEntity = userService.create(userRegistrationDTO);
 
             UriComponents uriComponents = builder.path("/api/user/{id}").buildAndExpand(userEntity.getId());
             return ResponseEntity.created(uriComponents.toUri()).body(userMapper.userToUserDTO(userEntity));
@@ -48,13 +57,24 @@ public class UserController {
     @PutMapping("/{id}")
     public ResponseEntity<UserDTO> modifyUser(@PathVariable Integer id, @RequestBody UserDTO userDTO, UriComponentsBuilder builder){
         try {
-            UserEntity userEntity = userService.modify(id, userDTO);
 
-            UriComponents uriComponents = builder.path("/api/user/{id}").buildAndExpand(userEntity.getId());
-            // Handle creation AND modification with different codes
-            return ResponseEntity.created(uriComponents.toUri()).body(userMapper.userToUserDTO(userEntity));
+
+            UserEntity userEntity;
+            if (!userService.existsById(id)){
+                userEntity = userService.create(userMapper.userDTOToUserRegistrationDTO(userDTO));
+                UriComponents uriComponents = builder.path("/api/user/{id}").buildAndExpand(userEntity.getId());
+                log.debug("Created entity : {}", userEntity);
+                return ResponseEntity.created(uriComponents.toUri()).body(userMapper.userToUserDTO(userEntity));
+            }
+            else {
+                userEntity = userService.modify(id, userDTO);
+                UriComponents uriComponents = builder.path("/api/user/{id}").buildAndExpand(userEntity.getId());
+                log.debug("Updated entity: {}", userEntity);
+                return ResponseEntity.ok(userMapper.userToUserDTO(userEntity));
+            }
         }
         catch (Exception e) {
+            log.error(e.getMessage());
             return ResponseEntity.badRequest().build();
         }
     }
