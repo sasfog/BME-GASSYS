@@ -31,6 +31,46 @@
         <io.springfox.version>3.0.0</io.springfox.version>
         <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+
+            <dependency>
+                <groupId>hu.bme.aut.gassys</groupId>
+                <artifactId>common</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>2020.0.4</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- OpenAPI (Swagger 2) leírás generálás a Controllerek alapján -->
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-boot-starter</artifactId>
+                <version>${io.springfox.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger-ui</artifactId>
+                <version>${io.springfox.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-spring-web</artifactId>
+                <version>${io.springfox.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger-common</artifactId>
+                <version>${io.springfox.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     <dependencies>
 
         <!-- Annotation based validation -->
@@ -43,7 +83,8 @@
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <scope>runtime</scope>
+            <!-- <scope>runtime</scope> -->
+            <scope>test</scope>
         </dependency>
 
         <!-- Annotation-based boilerplate generation
@@ -62,28 +103,6 @@
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
             <version>${org.mapstruct.version}</version>
-        </dependency>
-
-        <!-- OpenAPI (Swagger 2) leírás generálás a Controllerek alapján -->
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-boot-starter</artifactId>
-            <version>${io.springfox.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger-ui</artifactId>
-            <version>${io.springfox.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-spring-web</artifactId>
-            <version>${io.springfox.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger-common</artifactId>
-            <version>${io.springfox.version}</version>
         </dependency>
     </dependencies>
 

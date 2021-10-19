@@ -1,0 +1,13 @@
+# A ConfigServer lokalis fejlesztesi profil beallitasai
+spring:
+  cloud:
+    config:
+      server:
+        native:
+          addLabelLocations: false
+          search-locations:
+            - classpath:config/{profile}/{application}
+            - classpath:config
+
+server:
+  port: 8888
