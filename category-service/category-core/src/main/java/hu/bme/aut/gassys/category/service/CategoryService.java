@@ -1,6 +1,6 @@
 package hu.bme.aut.gassys.category.service;
 
-import hu.bme.aut.gassys.category.CategoryCreateDTO;
+import hu.bme.aut.gassys.category.CategoryCreationDTO;
 import hu.bme.aut.gassys.category.CategoryDTO;
 import hu.bme.aut.gassys.category.data.CategoryEntity;
 import hu.bme.aut.gassys.category.data.CategoryRepository;
@@ -20,7 +20,7 @@ public class CategoryService {
 
     private CategoryRepository categoryRepository;
 
-    public CategoryEntity create(CategoryCreateDTO dto){
+    public CategoryEntity create(CategoryCreationDTO dto){
         log.debug("Creating new Category {}", dto);
         CategoryEntity categoryEntity = new CategoryEntity();
         categoryEntity.setName(dto.getName());

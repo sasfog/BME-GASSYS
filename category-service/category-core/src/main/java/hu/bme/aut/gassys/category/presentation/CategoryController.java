@@ -1,6 +1,6 @@
 package hu.bme.aut.gassys.category.presentation;
 
-import hu.bme.aut.gassys.category.CategoryCreateDTO;
+import hu.bme.aut.gassys.category.CategoryCreationDTO;
 import hu.bme.aut.gassys.category.CategoryDTO;
 import hu.bme.aut.gassys.category.data.CategoryEntity;
 import hu.bme.aut.gassys.category.service.CategoryException;
@@ -38,9 +38,9 @@ public class CategoryController {
     }
 
     @PostMapping
-    public ResponseEntity<CategoryDTO> createCategory(@RequestBody CategoryCreateDTO categoryCreateDTO, UriComponentsBuilder builder){
+    public ResponseEntity<CategoryDTO> createCategory(@RequestBody CategoryCreationDTO categoryCreationDTO, UriComponentsBuilder builder){
         try{
-            CategoryEntity categoryEntity = categoryService.create(categoryCreateDTO);
+            CategoryEntity categoryEntity = categoryService.create(categoryCreationDTO);
 
             UriComponents uriComponents = builder.path("/api/category/{id}").buildAndExpand(categoryEntity.getId());
             return ResponseEntity.created(uriComponents.toUri()).body(categoryMapper.categoryToCategoryDTO(categoryEntity));
@@ -80,7 +80,7 @@ public class CategoryController {
 
             CategoryEntity categoryEntity;
             if (!categoryService.existsById(id)){
-                categoryEntity = categoryService.create(categoryMapper.categoryDTOToCategoryCreateDTO(categoryDTO));
+                categoryEntity = categoryService.create(categoryMapper.categoryDTOToCategoryCreationDTO(categoryDTO));
                 UriComponents uriComponents = builder.path("/api/category/{id}").buildAndExpand(categoryEntity.getId());
                 log.debug("Created entity : {}", categoryEntity);
                 return ResponseEntity.created(uriComponents.toUri()).body(categoryMapper.categoryToCategoryDTO(categoryEntity));
