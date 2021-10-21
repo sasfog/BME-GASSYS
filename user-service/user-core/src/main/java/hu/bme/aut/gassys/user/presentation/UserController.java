@@ -7,8 +7,7 @@ import hu.bme.aut.gassys.user.service.UserException;
 import hu.bme.aut.gassys.user.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -18,7 +17,6 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 import hu.bme.aut.gassys.user.UserDTO;
 
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/user")
