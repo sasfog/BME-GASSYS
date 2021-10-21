@@ -57,7 +57,6 @@ public class CategoryController {
             return ResponseEntity.ok(HttpStatus.OK);
         }
         catch (CategoryException e){
-            e.printStackTrace();
             return ResponseEntity.noContent().build();
         }
     }
