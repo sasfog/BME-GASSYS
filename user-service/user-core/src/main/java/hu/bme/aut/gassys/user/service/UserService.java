@@ -6,6 +6,7 @@ import hu.bme.aut.gassys.user.data.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -44,8 +45,14 @@ public class UserService {
     }
 
     public void deleteById(Integer id) {
-        log.debug("Deleting user {}", id);
-        userRepository.deleteById(id);
+        try {
+            log.debug("Deleting user {}", id);
+            userRepository.deleteById(id);
+        }
+        catch (EmptyResultDataAccessException e){
+            log.warn("User with id {} not found.", id);
+            throw new UserException();
+        }
     }
 
     public UserEntity modify(Integer id, UserDTO dto) {

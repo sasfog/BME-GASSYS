@@ -3,10 +3,12 @@ package hu.bme.aut.gassys.user.presentation;
 
 import hu.bme.aut.gassys.user.UserRegistrationDTO;
 import hu.bme.aut.gassys.user.data.UserEntity;
+import hu.bme.aut.gassys.user.service.UserException;
 import hu.bme.aut.gassys.user.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -68,7 +70,6 @@ public class UserController {
             }
             else {
                 userEntity = userService.modify(id, userDTO);
-                UriComponents uriComponents = builder.path("/api/user/{id}").buildAndExpand(userEntity.getId());
                 log.debug("Updated entity: {}", userEntity);
                 return ResponseEntity.ok(userMapper.userToUserDTO(userEntity));
             }
@@ -81,8 +82,13 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> deleteUser(@PathVariable Integer id) {
+        try {
             userService.deleteById(id);
             return ResponseEntity.ok(HttpStatus.OK);
+        }
+        catch (UserException e){
+            return ResponseEntity.noContent().build();
+        }
     }
 
 }
