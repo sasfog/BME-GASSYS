@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/gassys_eventdb
+    username: gassys_eventdb_user
+    password: gassys_eventdb_user
+  #    url: jdbc:h2:mem:.
+  #    driver-class-name: org.h2.Driver
+  #    username: sa
+  #    password: password
+
+
+
+  jpa:
+    hibernate:
+      ddl-auto:
+        create
+
+server:
+  port: 8082
