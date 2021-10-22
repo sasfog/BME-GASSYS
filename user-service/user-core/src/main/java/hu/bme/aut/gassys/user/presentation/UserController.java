@@ -3,7 +3,7 @@ package hu.bme.aut.gassys.user.presentation;
 
 import hu.bme.aut.gassys.user.UserRegistrationDTO;
 import hu.bme.aut.gassys.user.data.UserEntity;
-import hu.bme.aut.gassys.user.service.UserException;
+import hu.bme.aut.gassys.user.exception.UserException;
 import hu.bme.aut.gassys.user.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

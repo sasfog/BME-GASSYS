@@ -1,4 +1,4 @@
-package hu.bme.aut.gassys.category.service;
+package hu.bme.aut.gassys.category.exception;
 
 public class CategoryException extends RuntimeException {
 

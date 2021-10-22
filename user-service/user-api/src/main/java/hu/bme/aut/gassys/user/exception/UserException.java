@@ -1,4 +1,4 @@
-package hu.bme.aut.gassys.user.service;
+package hu.bme.aut.gassys.user.exception;
 
 public class UserException extends RuntimeException {
 

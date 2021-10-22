@@ -4,6 +4,7 @@ import hu.bme.aut.gassys.category.CategoryCreationDTO;
 import hu.bme.aut.gassys.category.CategoryDTO;
 import hu.bme.aut.gassys.category.data.CategoryEntity;
 import hu.bme.aut.gassys.category.data.CategoryRepository;
+import hu.bme.aut.gassys.category.exception.CategoryException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
