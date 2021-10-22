@@ -65,15 +65,16 @@ public class AppointmentController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> deleteById(@PathVariable Integer id){
+    public ResponseEntity<HttpStatus> deleteAppointmentByEventId(@PathVariable Integer id){
         try {
-            appointmentService.deleteOne(id);
+            appointmentService.deleteByEventId(id);
             return ResponseEntity.ok(HttpStatus.OK);
         }
         catch (AppointmentException e){
             return ResponseEntity.noContent().build();
         }
     }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<AppointmentDTO> modifyAppointment(@PathVariable Integer id, @RequestBody AppointmentDTO appointmentDTO, UriComponentsBuilder builder){

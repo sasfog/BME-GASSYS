@@ -28,13 +28,12 @@ public class EventService {
 
     private final UserServiceIF userServiceClient;
 
-    public EventEntity create(EventCreationDTO dto){
+    public EventEntity create(EventCreationDTO dto) {
         log.debug("Creating new Event {}", dto);
 
-        try{
+        try {
             userServiceClient.findOneUser(dto.getOrganiserId());
-        }
-        catch (FeignException e){
+        } catch (FeignException e) {
             e.printStackTrace();
             log.error("Error during event creation.");
             log.error("{}", e.getMessage());
@@ -51,17 +50,14 @@ public class EventService {
         eventEntity.setOrganiserId(dto.getOrganiserId());
 
 
-
-
-        eventEntity =  eventRepository.save(eventEntity);
+        eventEntity = eventRepository.save(eventEntity);
         AppointmentCreationDTO appointmentCreationDTO = new AppointmentCreationDTO();
         appointmentCreationDTO.setEventId(eventEntity.getId());
 
         // TODO: Can this be handled better?
         try {
-            appointmentServiceClient.CreateAppointment(appointmentCreationDTO);
-        }
-        catch (FeignException e){
+            appointmentServiceClient.createAppointment(appointmentCreationDTO);
+        } catch (FeignException e) {
             e.printStackTrace();
             log.error("Error during event creation.");
             log.error("{}", e.getMessage());
@@ -78,19 +74,26 @@ public class EventService {
         return eventRepository.findById(id);
     }
 
-    public void deleteOne(Integer id){
-        log.debug("Creating event {}", id);
+    public void deleteOne(Integer id) {
+        log.debug("Deleting event {}", id);
+
+        EventEntity entity;
         try {
+            entity = eventRepository.findById(id).orElseThrow(EventException::new);
+            appointmentServiceClient.deleteAppointmentByEventId(entity.getId());
             eventRepository.deleteById(id);
+
+        } catch (FeignException e) {
+            e.printStackTrace();
+            log.error("Error during event deletion. Was unable to delete appointments");
+            log.error("{}", e.getMessage());
+            throw e;
         }
-        catch (EmptyResultDataAccessException e){
-            log.warn("Event with id {} not found.", id);
-            throw new EventException();
-        }
+
     }
 
     public void deleteAll() {
-        log.debug("Creating all events");
+        log.debug("Deleting all events");
         eventRepository.deleteAll();
     }
 
@@ -102,7 +105,7 @@ public class EventService {
         log.debug("Updating event {} to {}", id, eventDTO.getName());
 
         // TODO: Refactor with orElseThrow
-        EventEntity entity = eventRepository.findById(id).get();
+        EventEntity entity = eventRepository.findById(id).orElseThrow(EventException::new);
         entity.setName(eventDTO.getName());
         entity.setStartDateTime(eventDTO.getStartDateTime());
         entity.setDescription(eventDTO.getDescription());

@@ -51,10 +51,10 @@ public class AppointmentService {
         return appointmentRepository.findById(id);
     }
 
-    public void deleteOne(Integer id) {
-        log.debug("Creating appointment {}", id);
+    public void deleteByEventId(Integer id) {
+        log.debug("Deleting appointments for event id {}", id);
         try {
-            appointmentRepository.deleteById(id);
+            appointmentRepository.deleteAppointmentEntitiesByEventId(id);
         } catch (EmptyResultDataAccessException e) {
             log.warn("Appointment with id {} not found.", id);
             throw new AppointmentException();
@@ -62,7 +62,7 @@ public class AppointmentService {
     }
 
     public void deleteAll() {
-        log.debug("Creating all appointments");
+        log.debug("Deleting all appointments");
         appointmentRepository.deleteAll();
     }
 
@@ -74,7 +74,7 @@ public class AppointmentService {
         log.debug("Updating appointment {}", id);
 
         // TODO: Refactor with orElseThrow
-        AppointmentEntity entity = appointmentRepository.findById(id).get();
+        AppointmentEntity entity = appointmentRepository.findById(id).orElseThrow(AppointmentNotFoundException::new);
         entity.setEventId(appointmentDTO.getEventId());
         entity.setCategoryIds(appointmentDTO.getCategoryIds());
         entity.setApplicantIds(appointmentDTO.getApplicantIds());
