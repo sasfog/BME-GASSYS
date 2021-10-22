@@ -1,14 +1,12 @@
 package hu.bme.aut.gassys.appointment.presentation;
 
+import feign.FeignException;
 import hu.bme.aut.gassys.appointment.AppointmentCreationDTO;
 import hu.bme.aut.gassys.appointment.AppointmentDTO;
 import hu.bme.aut.gassys.appointment.data.AppointmentEntity;
 import hu.bme.aut.gassys.appointment.exception.AppointmentException;
 import hu.bme.aut.gassys.appointment.service.AppointmentService;
 import hu.bme.aut.gassys.appointment.exception.AppointmentNotFoundException;
-import hu.bme.aut.gassys.category.exception.CategoryException;
-import hu.bme.aut.gassys.user.exception.UserException;
-import io.swagger.models.Response;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -25,9 +23,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 @AllArgsConstructor
 public class AppointmentController {
 
-    private AppointmentService appointmentService;
+    private final AppointmentService appointmentService;
 
-    private AppointmentMapper appointmentMapper;
+    private final AppointmentMapper appointmentMapper;
 
     @GetMapping
     public ResponseEntity<Page<AppointmentDTO>> getAll(Pageable pageable){
@@ -107,7 +105,7 @@ public class AppointmentController {
             AppointmentEntity entity = appointmentService.addApplicant(appointmentId, applicantId);
             return ResponseEntity.ok(appointmentMapper.appointmentToAppointmentDTO(entity));
         }
-        catch (AppointmentNotFoundException | UserException e) {
+        catch (AppointmentNotFoundException | FeignException e) {
             e.printStackTrace();
             return ResponseEntity.notFound().build();
         }
@@ -124,7 +122,7 @@ public class AppointmentController {
             AppointmentEntity entity = appointmentService.removeApplicant(appointmentId, applicantId);
             return ResponseEntity.ok(appointmentMapper.appointmentToAppointmentDTO(entity));
         }
-        catch (AppointmentNotFoundException | UserException e) {
+        catch (AppointmentNotFoundException | FeignException e) {
             e.printStackTrace();
             return ResponseEntity.notFound().build();
         }
@@ -139,7 +137,7 @@ public class AppointmentController {
             AppointmentEntity entity = appointmentService.addCategory(appointmentId, categoryId);
             return ResponseEntity.ok(appointmentMapper.appointmentToAppointmentDTO(entity));
         }
-        catch (AppointmentNotFoundException | CategoryException e) {
+        catch (AppointmentNotFoundException | FeignException e) {
             e.printStackTrace();
             return ResponseEntity.notFound().build();
         }
@@ -154,7 +152,7 @@ public class AppointmentController {
             AppointmentEntity entity = appointmentService.removeCategory(appointmentId, categoryId);
             return ResponseEntity.ok(appointmentMapper.appointmentToAppointmentDTO(entity));
         }
-        catch (AppointmentNotFoundException | CategoryException e) {
+        catch (AppointmentNotFoundException | FeignException e) {
             e.printStackTrace();
             return ResponseEntity.notFound().build();
         }

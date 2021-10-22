@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -28,20 +27,20 @@ public class AppointmentEntity {
     @ElementCollection
     private Set<Integer> categoryIds;
 
-    public boolean addApplicant(Integer applicantId) {
-        return applicantIds.add(applicantId);
+    public void addApplicant(Integer applicantId) {
+        applicantIds.add(applicantId);
     }
 
-    public boolean removeApplicant(Integer applicantId) {
-        return applicantIds.remove(applicantId);
+    public void removeApplicant(Integer applicantId) {
+        applicantIds.remove(applicantId);
     }
 
-    public boolean addCategory(Integer categoryId) {
-        return categoryIds.add(categoryId);
+    public void addCategory(Integer categoryId) {
+        categoryIds.add(categoryId);
     }
 
-    public boolean removeCategory(Integer categoryId) {
-        return categoryIds.remove(categoryId);
+    public void removeCategory(Integer categoryId) {
+        categoryIds.remove(categoryId);
     }
 
 
