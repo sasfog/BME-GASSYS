@@ -1,9 +1,13 @@
 package hu.bme.aut.gassys.event.service;
 
+import feign.FeignException;
+import hu.bme.aut.gassys.appointment.AppointmentCreationDTO;
+import hu.bme.aut.gassys.appointment.AppointmentServiceIF;
 import hu.bme.aut.gassys.event.EventCreationDTO;
 import hu.bme.aut.gassys.event.EventDTO;
 import hu.bme.aut.gassys.event.data.EventEntity;
 import hu.bme.aut.gassys.event.data.EventRepository;
+import hu.bme.aut.gassys.user.UserServiceIF;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -18,10 +22,25 @@ import java.util.Optional;
 @AllArgsConstructor
 public class EventService {
 
-    private EventRepository eventRepository;
+    private final EventRepository eventRepository;
+
+    private final AppointmentServiceIF appointmentServiceClient;
+
+    private final UserServiceIF userServiceClient;
 
     public EventEntity create(EventCreationDTO dto){
         log.debug("Creating new Event {}", dto);
+
+        try{
+            userServiceClient.findOneUser(dto.getOrganiserId());
+        }
+        catch (FeignException e){
+            e.printStackTrace();
+            log.error("Error during event creation.");
+            log.error("{}", e.getMessage());
+            throw e;
+        }
+
         EventEntity eventEntity = new EventEntity();
         eventEntity.setName(dto.getName());
         eventEntity.setStartDateTime(dto.getStartDateTime());
@@ -29,7 +48,26 @@ public class EventService {
         eventEntity.setDuration(dto.getDuration());
         eventEntity.setCapacity(dto.getCapacity());
         eventEntity.setColor(dto.getColor());
-        return eventRepository.save(eventEntity);
+        eventEntity.setOrganiserId(dto.getOrganiserId());
+
+
+
+
+        eventEntity =  eventRepository.save(eventEntity);
+        AppointmentCreationDTO appointmentCreationDTO = new AppointmentCreationDTO();
+        appointmentCreationDTO.setEventId(eventEntity.getId());
+
+        // TODO: Can this be handled better?
+        try {
+            appointmentServiceClient.CreateAppointment(appointmentCreationDTO);
+        }
+        catch (FeignException e){
+            e.printStackTrace();
+            log.error("Error during event creation.");
+            log.error("{}", e.getMessage());
+            throw e;
+        }
+        return eventEntity;
     }
 
     public Page<EventEntity> findAllEvents(Pageable pageable) {
@@ -63,6 +101,7 @@ public class EventService {
     public EventEntity modify(Integer id, EventDTO eventDTO) {
         log.debug("Updating event {} to {}", id, eventDTO.getName());
 
+        // TODO: Refactor with orElseThrow
         EventEntity entity = eventRepository.findById(id).get();
         entity.setName(eventDTO.getName());
         entity.setStartDateTime(eventDTO.getStartDateTime());
@@ -70,6 +109,7 @@ public class EventService {
         entity.setDuration(eventDTO.getDuration());
         entity.setCapacity(eventDTO.getCapacity());
         entity.setColor(eventDTO.getColor());
+        entity.setOrganiserId(eventDTO.getOrganiserId());
         return eventRepository.save(entity);
     }
 }

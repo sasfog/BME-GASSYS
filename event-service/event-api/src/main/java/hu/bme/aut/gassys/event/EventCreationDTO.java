@@ -19,6 +19,10 @@ public class EventCreationDTO {
 
     @NotNull
     @NotEmpty
+    private Integer organiserId;
+
+    @NotNull
+    @NotEmpty
     private Instant startDateTime;
 
     private Integer capacity;

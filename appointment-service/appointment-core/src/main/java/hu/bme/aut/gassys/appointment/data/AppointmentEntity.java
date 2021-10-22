@@ -16,9 +16,6 @@ public class AppointmentEntity {
     private Integer id;
 
     @Column(nullable = false)
-    private Integer organiserId;
-
-    @Column(nullable = false)
     private Integer eventId;
 
     @ElementCollection

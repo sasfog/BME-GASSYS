@@ -1,6 +1,8 @@
 package hu.bme.aut.gassys.event.presentation;
 
 
+
+import feign.FeignException;
 import hu.bme.aut.gassys.event.EventCreationDTO;
 import hu.bme.aut.gassys.event.EventDTO;
 import hu.bme.aut.gassys.event.data.EventEntity;
@@ -22,13 +24,13 @@ import org.springframework.web.util.UriComponentsBuilder;
 @AllArgsConstructor
 public class EventController {
     
-    private EventService eventService;
+    private final EventService eventService;
     
-    private EventMapper eventMapper;
+    private final EventMapper eventMapper;
 
     @GetMapping
     public ResponseEntity<Page<EventDTO>> getAll(Pageable pageable){
-        return ResponseEntity.ok(eventService.findAllEvents(pageable).map(eventMapper::eventToEventDTO));
+            return ResponseEntity.ok(eventService.findAllEvents(pageable).map(eventMapper::eventToEventDTO));
     }
 
     @GetMapping("/{id}")
@@ -45,6 +47,9 @@ public class EventController {
 
             UriComponents uriComponents = builder.path("/api/event/{id}").buildAndExpand(eventEntity.getId());
             return ResponseEntity.created(uriComponents.toUri()).body(eventMapper.eventToEventDTO(eventEntity));
+        }
+        catch (FeignException e){
+            return ResponseEntity.internalServerError().build();
         }
         catch (Exception e){
             e.printStackTrace();

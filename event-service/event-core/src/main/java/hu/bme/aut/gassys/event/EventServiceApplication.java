@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Import;
         ApiDocsConfiguration.class
 })
 @Slf4j
-@EnableFeignClients
+@EnableFeignClients(basePackages = "hu.bme.aut.gassys")
 public class EventServiceApplication {
 
     public static void main(String[] args) {

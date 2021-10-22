@@ -37,7 +37,6 @@ public class AppointmentService {
     public AppointmentEntity create(AppointmentCreationDTO dto) {
         log.debug("Creating new Appointment {}", dto);
         AppointmentEntity appointmentEntity = new AppointmentEntity();
-        appointmentEntity.setOrganiserId(dto.getOrganiserId());
         appointmentEntity.setEventId(dto.getEventId());
         appointmentEntity.setCategoryIds(dto.getCategoryIds());
         appointmentEntity.setApplicantIds(dto.getApplicantIds());
@@ -74,8 +73,8 @@ public class AppointmentService {
     public AppointmentEntity modify(Integer id, AppointmentDTO appointmentDTO) {
         log.debug("Updating appointment {}", id);
 
+        // TODO: Refactor with orElseThrow
         AppointmentEntity entity = appointmentRepository.findById(id).get();
-        entity.setOrganiserId(appointmentDTO.getOrganiserId());
         entity.setEventId(appointmentDTO.getEventId());
         entity.setCategoryIds(appointmentDTO.getCategoryIds());
         entity.setApplicantIds(appointmentDTO.getApplicantIds());

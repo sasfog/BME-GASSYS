@@ -15,10 +15,6 @@ public class AppointmentCreationDTO {
 
     @NotNull
     @NotEmpty
-    private Integer organiserId;
-
-    @NotNull
-    @NotEmpty
     private Integer eventId;
 
     private Set<Integer> applicantIds;

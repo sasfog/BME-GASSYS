@@ -19,6 +19,10 @@ public class EventDTO {
 
     @NotNull
     @NotEmpty
+    private Integer organiserId;
+
+    @NotNull
+    @NotEmpty
     private String name;
 
     @NotNull

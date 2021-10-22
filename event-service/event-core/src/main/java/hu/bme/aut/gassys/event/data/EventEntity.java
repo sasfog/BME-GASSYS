@@ -16,10 +16,15 @@ public class EventEntity {
     private Integer id;
 
     @Column(nullable = false)
+    private Integer organiserId;
+
+    @Column(nullable = false)
     private String name;
 
     @Column(nullable = false)
     private Instant startDateTime;
+
+
 
     private Integer capacity;
 
