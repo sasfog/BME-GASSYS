@@ -6,13 +6,19 @@ import hu.bme.aut.gassys.appointment.data.AppointmentEntity;
 import hu.bme.aut.gassys.appointment.data.AppointmentRepository;
 import hu.bme.aut.gassys.appointment.exception.AppointmentException;
 import hu.bme.aut.gassys.appointment.exception.AppointmentNotFoundException;
+import hu.bme.aut.gassys.category.CategoryDTO;
+import hu.bme.aut.gassys.category.CategoryServiceIF;
 import hu.bme.aut.gassys.category.exception.CategoryException;
+import hu.bme.aut.gassys.user.UserDTO;
+import hu.bme.aut.gassys.user.UserServiceIF;
 import hu.bme.aut.gassys.user.exception.UserException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -23,6 +29,10 @@ import java.util.Optional;
 public class AppointmentService {
 
     private AppointmentRepository appointmentRepository;
+
+    private UserServiceIF userServiceClient;
+
+    private CategoryServiceIF categoryServiceClient;
 
     public AppointmentEntity create(AppointmentCreationDTO dto) {
         log.debug("Creating new Appointment {}", dto);
@@ -72,43 +82,67 @@ public class AppointmentService {
         return appointmentRepository.save(entity);
     }
 
+    private boolean applicantExists(Integer applicantId) {
+        ResponseEntity<UserDTO> entity = userServiceClient.findOneUser(applicantId);
+        return entity.getStatusCode() == HttpStatus.OK;
+    }
+
     public AppointmentEntity addApplicant(Integer appointmentId, Integer applicantId) {
         AppointmentEntity appointmentEntity = appointmentRepository.findById(appointmentId)
                 .orElseThrow(AppointmentNotFoundException::new);
 
-        if (appointmentEntity.addApplicant(applicantId))
-            return appointmentRepository.save(appointmentEntity);
-        else
+        if (!applicantExists(applicantId))
             throw new UserException();
+
+        if (!appointmentEntity.addApplicant(applicantId))
+            throw new UserException();
+
+        return appointmentRepository.save(appointmentEntity);
+
     }
 
     public AppointmentEntity removeApplicant(Integer appointmentId, Integer applicantId) {
         AppointmentEntity appointmentEntity = appointmentRepository.findById(appointmentId)
                 .orElseThrow(AppointmentNotFoundException::new);
 
-        if (appointmentEntity.removeApplicant(applicantId))
-            return appointmentRepository.save(appointmentEntity);
-        else
+        if (!applicantExists(applicantId))
             throw new UserException();
+
+        if (!appointmentEntity.removeApplicant(applicantId))
+            throw new UserException();
+
+        else
+            return appointmentRepository.save(appointmentEntity);
+    }
+
+    private boolean categoryExists(Integer categoryId) {
+        ResponseEntity<CategoryDTO> entity = categoryServiceClient.findOneCategory(categoryId);
+        return entity.getStatusCode() == HttpStatus.OK;
     }
 
     public AppointmentEntity addCategory(Integer appointmentId, Integer categoryId) {
         AppointmentEntity appointmentEntity = appointmentRepository.findById(appointmentId)
                 .orElseThrow(AppointmentNotFoundException::new);
 
-        if (appointmentEntity.addCategory(categoryId))
-            return appointmentRepository.save(appointmentEntity);
-        else
+        if (!applicantExists(categoryId))
             throw new CategoryException();
+
+        if (!appointmentEntity.addCategory(categoryId))
+            throw new CategoryException();
+        else
+            return appointmentRepository.save(appointmentEntity);
     }
 
     public AppointmentEntity removeCategory(Integer appointmentId, Integer categoryId) {
         AppointmentEntity appointmentEntity = appointmentRepository.findById(appointmentId)
                 .orElseThrow(AppointmentNotFoundException::new);
 
-        if (appointmentEntity.removeCategory(categoryId))
-            return appointmentRepository.save(appointmentEntity);
-        else
+        if (!applicantExists(categoryId))
             throw new CategoryException();
+
+        if (!appointmentEntity.removeCategory(categoryId))
+            throw new CategoryException();
+        else
+            return appointmentRepository.save(appointmentEntity);
     }
 }
