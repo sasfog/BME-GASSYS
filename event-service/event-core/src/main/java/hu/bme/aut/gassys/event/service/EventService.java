@@ -3,6 +3,7 @@ package hu.bme.aut.gassys.event.service;
 import feign.FeignException;
 import hu.bme.aut.gassys.appointment.AppointmentCreationDTO;
 import hu.bme.aut.gassys.appointment.AppointmentServiceIF;
+import hu.bme.aut.gassys.appointment.EventIdListDTO;
 import hu.bme.aut.gassys.event.EventCreationDTO;
 import hu.bme.aut.gassys.event.EventDTO;
 import hu.bme.aut.gassys.event.data.EventEntity;
@@ -10,12 +11,12 @@ import hu.bme.aut.gassys.event.data.EventRepository;
 import hu.bme.aut.gassys.user.UserServiceIF;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import javax.transaction.Transactional;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -77,16 +78,41 @@ public class EventService {
     public void deleteOne(Integer id) {
         log.debug("Deleting event {}", id);
 
-        EventEntity entity;
-        try {
-            entity = eventRepository.findById(id).orElseThrow(EventException::new);
-            appointmentServiceClient.deleteAppointmentByEventId(entity.getId());
-            eventRepository.deleteById(id);
+        if (!eventRepository.existsById(id)) {
+            log.warn("Error by id {} not found", id);
+            throw new EventException();
+        }
 
+        try {
+            appointmentServiceClient.deleteAppointmentByEventId(id);
+            eventRepository.deleteById(id);
         } catch (FeignException e) {
             e.printStackTrace();
             log.error("Error during event deletion. Was unable to delete appointments");
             log.error("{}", e.getMessage());
+            throw e;
+        }
+    }
+
+    @Transactional
+    public void deleteEventsByOrganiserId(Integer id) {
+        log.debug("Deleting events for organiser {}", id);
+        List<EventEntity> entities = eventRepository.getEventEntitiesByOrganiserId(id);
+        Set<Integer> eventIds = new HashSet<>();
+        EventIdListDTO eventIdListDTO = new EventIdListDTO();
+        for (EventEntity entity : entities) {
+            eventIds.add(entity.getId());
+        }
+        eventIdListDTO.setEventId(eventIds);
+
+        try {
+            appointmentServiceClient.deleteAppointmentByEventIds(eventIdListDTO);
+            eventRepository.deleteEventEntitiesByOrganiserId(id);
+        }
+        catch (FeignException e) {
+            e.printStackTrace();
+            log.error("Error during deletion of events by organiser {}", id);
+            log.error("{}",e.getMessage());
             throw e;
         }
 
@@ -115,4 +141,6 @@ public class EventService {
         entity.setOrganiserId(eventDTO.getOrganiserId());
         return eventRepository.save(entity);
     }
+
+
 }

@@ -21,7 +21,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @Slf4j
@@ -51,10 +53,21 @@ public class AppointmentService {
         return appointmentRepository.findById(id);
     }
 
+    @Transactional
     public void deleteByEventId(Integer id) {
         log.debug("Deleting appointments for event id {}", id);
         try {
             appointmentRepository.deleteAppointmentEntitiesByEventId(id);
+        } catch (EmptyResultDataAccessException e) {
+            log.warn("Appointment with id {} not found.", id);
+            throw new AppointmentException();
+        }
+    }
+
+    public void deleteOne(Integer id) {
+        log.debug("Deleting appointment {}", id);
+        try {
+            appointmentRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
             log.warn("Appointment with id {} not found.", id);
             throw new AppointmentException();
@@ -138,5 +151,12 @@ public class AppointmentService {
         appointmentEntity.removeCategory(categoryId);
 
         return appointmentRepository.save(appointmentEntity);
+    }
+
+    @Transactional
+    public void deleteByEventIdList(Set<Integer> eventIds) {
+        for (Integer id : eventIds) {
+            appointmentRepository.deleteAppointmentEntitiesByEventId(id);
+        }
     }
 }

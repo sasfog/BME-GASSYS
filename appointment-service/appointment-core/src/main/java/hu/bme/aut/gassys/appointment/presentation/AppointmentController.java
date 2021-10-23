@@ -3,6 +3,7 @@ package hu.bme.aut.gassys.appointment.presentation;
 import feign.FeignException;
 import hu.bme.aut.gassys.appointment.AppointmentCreationDTO;
 import hu.bme.aut.gassys.appointment.AppointmentDTO;
+import hu.bme.aut.gassys.appointment.EventIdListDTO;
 import hu.bme.aut.gassys.appointment.data.AppointmentEntity;
 import hu.bme.aut.gassys.appointment.exception.AppointmentException;
 import hu.bme.aut.gassys.appointment.service.AppointmentService;
@@ -53,6 +54,7 @@ public class AppointmentController {
         }
     }
 
+    /*
     @DeleteMapping
     public ResponseEntity<HttpStatus> deleteAll(){
         try {
@@ -63,9 +65,20 @@ public class AppointmentController {
             return ResponseEntity.noContent().build();
         }
     }
-
+    */
     @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> deleteAppointmentByEventId(@PathVariable Integer id){
+    public ResponseEntity<HttpStatus> deleteAppointment(@PathVariable Integer id) {
+        try {
+            appointmentService.deleteOne(id);
+            return ResponseEntity.ok(HttpStatus.OK);
+        }
+        catch (AppointmentException e){
+            return ResponseEntity.noContent().build();
+        }
+    }
+
+    @DeleteMapping()
+    public ResponseEntity<HttpStatus> deleteAppointmentByEventId(@RequestParam Integer id){
         try {
             appointmentService.deleteByEventId(id);
             return ResponseEntity.ok(HttpStatus.OK);
@@ -156,6 +169,17 @@ public class AppointmentController {
         catch (AppointmentNotFoundException | FeignException e) {
             e.printStackTrace();
             return ResponseEntity.notFound().build();
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @DeleteMapping("/event")
+    ResponseEntity<HttpStatus> deleteAppointmentByEventIds(@RequestBody EventIdListDTO dto){
+        try {
+            appointmentService.deleteByEventIdList(dto.getEventId());
+            return ResponseEntity.noContent().build();
         }
         catch (Exception e){
             return ResponseEntity.badRequest().build();

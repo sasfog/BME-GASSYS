@@ -1,12 +1,13 @@
 package hu.bme.aut.gassys.user.service;
 
+import feign.FeignException;
+import hu.bme.aut.gassys.event.EventServiceIF;
 import hu.bme.aut.gassys.user.UserRegistrationDTO;
 import hu.bme.aut.gassys.user.data.UserRepository;
 import hu.bme.aut.gassys.user.data.UserEntity;
 import hu.bme.aut.gassys.user.exception.UserException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,9 @@ import java.util.Optional;
 @AllArgsConstructor
 public class UserService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    private final EventServiceIF eventServiceClient;
 
     public Page<UserEntity> findAll(Pageable pageable) {
         return userRepository.findAll(pageable);
@@ -45,11 +48,19 @@ public class UserService {
     }
 
     public void deleteById(Integer id) {
-        try {
-            log.debug("Deleting user {}", id);
-            userRepository.deleteById(id);
+        log.debug("Deleting user {}", id);
+        if (userRepository.existsById(id)) {
+            try {
+                eventServiceClient.deleteEventByOrganiserId(id);
+                userRepository.deleteById(id);
+            } catch (FeignException e) {
+                e.printStackTrace();
+                log.error("Error during user deletion.");
+                log.error("{}", e.getMessage());
+                throw new UserException();
+            }
         }
-        catch (EmptyResultDataAccessException e){
+        else {
             log.warn("User with id {} not found.", id);
             throw new UserException();
         }
@@ -59,7 +70,7 @@ public class UserService {
         log.debug("Updating user {} with data {}", id, dto);
 
 
-        UserEntity entity = userRepository.findById(id).get();
+        UserEntity entity = userRepository.findById(id).orElseThrow(UserException::new);
         entity.setBirthdate(dto.getBirthdate());
         entity.setEmail(dto.getEmail());
         entity.setFirstName(dto.getFirstName());

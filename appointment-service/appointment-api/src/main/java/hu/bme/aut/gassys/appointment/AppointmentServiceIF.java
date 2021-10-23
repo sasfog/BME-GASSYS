@@ -4,10 +4,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 @FeignClient(
         name = "appointment-service-v1",
@@ -18,6 +15,9 @@ public interface AppointmentServiceIF {
     @PostMapping()
     ResponseEntity<AppointmentDTO> createAppointment(@RequestBody AppointmentCreationDTO dto);
 
-    @DeleteMapping("/{id}")
-    ResponseEntity<HttpStatus> deleteAppointmentByEventId(@PathVariable Integer id);
+    @DeleteMapping()
+    ResponseEntity<HttpStatus> deleteAppointmentByEventId(@RequestParam Integer id);
+
+    @DeleteMapping("/event")
+    ResponseEntity<HttpStatus> deleteAppointmentByEventIds(@RequestBody EventIdListDTO dto);
 }

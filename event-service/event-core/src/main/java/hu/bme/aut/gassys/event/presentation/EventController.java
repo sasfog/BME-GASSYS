@@ -1,7 +1,6 @@
 package hu.bme.aut.gassys.event.presentation;
 
 
-
 import feign.FeignException;
 import hu.bme.aut.gassys.event.EventCreationDTO;
 import hu.bme.aut.gassys.event.EventDTO;
@@ -23,40 +22,39 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Slf4j
 @AllArgsConstructor
 public class EventController {
-    
+
     private final EventService eventService;
-    
+
     private final EventMapper eventMapper;
 
     @GetMapping
-    public ResponseEntity<Page<EventDTO>> getAll(Pageable pageable){
-            return ResponseEntity.ok(eventService.findAllEvents(pageable).map(eventMapper::eventToEventDTO));
+    public ResponseEntity<Page<EventDTO>> getAll(Pageable pageable) {
+        return ResponseEntity.ok(eventService.findAllEvents(pageable).map(eventMapper::eventToEventDTO));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<EventDTO> getEvent(@PathVariable Integer id){
+    public ResponseEntity<EventDTO> getEvent(@PathVariable Integer id) {
         return eventService.findOne(id)
                 .map(eventEntity -> ResponseEntity.ok(eventMapper.eventToEventDTO(eventEntity)))
-                .orElseGet( () -> ResponseEntity.notFound().build());
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity<EventDTO> createEvent(@RequestBody EventCreationDTO eventCreationDTO, UriComponentsBuilder builder){
-        try{
+    public ResponseEntity<EventDTO> createEvent(@RequestBody EventCreationDTO eventCreationDTO, UriComponentsBuilder builder) {
+        try {
             EventEntity eventEntity = eventService.create(eventCreationDTO);
 
             UriComponents uriComponents = builder.path("/api/event/{id}").buildAndExpand(eventEntity.getId());
             return ResponseEntity.created(uriComponents.toUri()).body(eventMapper.eventToEventDTO(eventEntity));
-        }
-        catch (FeignException e){
+        } catch (FeignException e) {
             return ResponseEntity.internalServerError().build();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().build();
         }
     }
 
+    /*
     @DeleteMapping
     public ResponseEntity<HttpStatus> deleteAll(){
         try {
@@ -67,37 +65,44 @@ public class EventController {
             return ResponseEntity.noContent().build();
         }
     }
-
+*/
     @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> deleteById(@PathVariable Integer id){
+    public ResponseEntity<HttpStatus> deleteEvent(@PathVariable Integer id) {
         try {
             eventService.deleteOne(id);
             return ResponseEntity.ok(HttpStatus.OK);
+        } catch (EventException e) {
+            return ResponseEntity.noContent().build();
         }
-        catch (EventException e){
+    }
+
+    @DeleteMapping()
+    public ResponseEntity<HttpStatus> deleteEventByOrganiserId(@RequestParam Integer id) {
+        try {
+            eventService.deleteEventsByOrganiserId(id);
+            return ResponseEntity.ok(HttpStatus.OK);
+        } catch (EventException e) {
             return ResponseEntity.noContent().build();
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<EventDTO> modifyEvent(@PathVariable Integer id, @RequestBody EventDTO eventDTO, UriComponentsBuilder builder){
+    public ResponseEntity<EventDTO> modifyEvent(@PathVariable Integer id, @RequestBody EventDTO eventDTO, UriComponentsBuilder builder) {
         try {
 
 
             EventEntity eventEntity;
-            if (!eventService.existsById(id)){
+            if (!eventService.existsById(id)) {
                 eventEntity = eventService.create(eventMapper.eventDTOToEventCreationDTO(eventDTO));
                 UriComponents uriComponents = builder.path("/api/event/{id}").buildAndExpand(eventEntity.getId());
                 log.debug("Creationd entity : {}", eventEntity);
                 return ResponseEntity.created(uriComponents.toUri()).body(eventMapper.eventToEventDTO(eventEntity));
-            }
-            else {
+            } else {
                 eventEntity = eventService.modify(id, eventDTO);
                 log.debug("Updated entity: {}", eventEntity);
                 return ResponseEntity.ok(eventMapper.eventToEventDTO(eventEntity));
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             log.error(e.getMessage());
             return ResponseEntity.badRequest().build();
         }

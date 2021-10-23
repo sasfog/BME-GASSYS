@@ -1,6 +1,7 @@
 package hu.bme.aut.gassys.user.presentation;
 
 
+import feign.FeignException;
 import hu.bme.aut.gassys.user.UserRegistrationDTO;
 import hu.bme.aut.gassys.user.data.UserEntity;
 import hu.bme.aut.gassys.user.exception.UserException;
@@ -25,9 +26,9 @@ import hu.bme.aut.gassys.user.UserDTO;
 public class UserController {
 
 
-    private UserService userService;
+    private final UserService userService;
 
-    private UserMapper userMapper;
+    private final UserMapper userMapper;
 
     @GetMapping
     public ResponseEntity<Page<UserDTO>> findAllUsers(Pageable pageable) {
@@ -83,6 +84,9 @@ public class UserController {
         try {
             userService.deleteById(id);
             return ResponseEntity.ok(HttpStatus.OK);
+        }
+        catch (FeignException e){
+            return ResponseEntity.internalServerError().build();
         }
         catch (UserException e){
             return ResponseEntity.noContent().build();
