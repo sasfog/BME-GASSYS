@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient(
         name = "event-service-v1",
-        url = "${services.event-service-url:localhost:8082}/api/event"
+        url = "${services.event-service-url:localhost:8082}/api/internal/event"
 )
 public interface EventServiceIF {
 

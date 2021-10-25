@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @FeignClient(
         name = "appointment-service-v1",
-        url = "${services.appointment-service-url:localhost:8083}/api/appointment"
+        url = "${services.appointment-service-url:localhost:8083}/api/internal/appointment"
 )
 public interface AppointmentServiceIF {
 

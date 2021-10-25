@@ -76,15 +76,7 @@ public class EventController {
         }
     }
 
-    @DeleteMapping()
-    public ResponseEntity<HttpStatus> deleteEventByOrganiserId(@RequestParam Integer id) {
-        try {
-            eventService.deleteEventsByOrganiserId(id);
-            return ResponseEntity.ok(HttpStatus.OK);
-        } catch (EventException e) {
-            return ResponseEntity.noContent().build();
-        }
-    }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<EventDTO> modifyEvent(@PathVariable Integer id, @RequestBody EventDTO eventDTO, UriComponentsBuilder builder) {

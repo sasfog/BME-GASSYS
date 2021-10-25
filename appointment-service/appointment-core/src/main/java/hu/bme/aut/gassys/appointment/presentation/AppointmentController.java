@@ -40,20 +40,6 @@ public class AppointmentController {
                 .orElseGet( () -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping
-    public ResponseEntity<AppointmentDTO> createAppointment(@RequestBody AppointmentCreationDTO appointmentCreationDTO, UriComponentsBuilder builder){
-        try{
-            AppointmentEntity appointmentEntity = appointmentService.create(appointmentCreationDTO);
-
-            UriComponents uriComponents = builder.path("/api/appointment/{id}").buildAndExpand(appointmentEntity.getId());
-            return ResponseEntity.created(uriComponents.toUri()).body(appointmentMapper.appointmentToAppointmentDTO(appointmentEntity));
-        }
-        catch (Exception e){
-            e.printStackTrace();
-            return ResponseEntity.badRequest().build();
-        }
-    }
-
     /*
     @DeleteMapping
     public ResponseEntity<HttpStatus> deleteAll(){
@@ -77,16 +63,7 @@ public class AppointmentController {
         }
     }
 
-    @DeleteMapping()
-    public ResponseEntity<HttpStatus> deleteAppointmentByEventId(@RequestParam Integer id){
-        try {
-            appointmentService.deleteByEventId(id);
-            return ResponseEntity.ok(HttpStatus.OK);
-        }
-        catch (AppointmentException e){
-            return ResponseEntity.noContent().build();
-        }
-    }
+
 
 
     @PutMapping("/{id}")
@@ -175,14 +152,5 @@ public class AppointmentController {
         }
     }
 
-    @DeleteMapping("/event")
-    ResponseEntity<HttpStatus> deleteAppointmentByEventIds(@RequestBody EventIdListDTO dto){
-        try {
-            appointmentService.deleteByEventIdList(dto.getEventId());
-            return ResponseEntity.noContent().build();
-        }
-        catch (Exception e){
-            return ResponseEntity.badRequest().build();
-        }
-    }
+
 }
