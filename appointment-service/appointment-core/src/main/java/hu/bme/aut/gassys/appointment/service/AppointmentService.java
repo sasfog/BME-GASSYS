@@ -95,11 +95,13 @@ public class AppointmentService {
     }
 
     private boolean applicantNotExists(Integer applicantId) {
+        log.error("Applicant {} does not exist.", applicantId);
         ResponseEntity<UserDTO> entity = userServiceClient.findOneUser(applicantId);
         return entity.getStatusCode() != HttpStatus.OK;
     }
 
     public AppointmentEntity addApplicant(Integer appointmentId, Integer applicantId) {
+        log.debug("Adding applicant {} to appointment {}", applicantId, appointmentId);
         AppointmentEntity appointmentEntity = appointmentRepository.findById(appointmentId)
                 .orElseThrow(AppointmentNotFoundException::new);
 
@@ -113,6 +115,7 @@ public class AppointmentService {
     }
 
     public AppointmentEntity removeApplicant(Integer appointmentId, Integer applicantId) {
+        log.debug("Removing applicant {} from appointment {}", applicantId, appointmentId);
         AppointmentEntity appointmentEntity = appointmentRepository.findById(appointmentId)
                 .orElseThrow(AppointmentNotFoundException::new);
 
@@ -124,12 +127,28 @@ public class AppointmentService {
         return appointmentRepository.save(appointmentEntity);
     }
 
+    public void removeApplicantsByApplicantId(Integer applicantId) {
+        log.debug("Removing applicant {} from appointments.", applicantId);
+        Set<AppointmentEntity> appointmentEntities = appointmentRepository.getAppointmentEntitiesByApplicantIdsContaining(applicantId);
+
+        appointmentEntities.forEach(e -> e.removeApplicant(applicantId));
+
+        appointmentRepository.saveAll(appointmentEntities);
+        // TODO: Maybe return changed list for FE?
+    }
+
     private boolean categoryNotExists(Integer categoryId) {
+
         ResponseEntity<CategoryDTO> entity = categoryServiceClient.findOneCategory(categoryId);
-        return entity.getStatusCode() != HttpStatus.OK;
+        if (entity.getStatusCode() != HttpStatus.OK){
+            log.error("Category {} does not exist.", categoryId);
+            return true;
+        }
+        return false;
     }
 
     public AppointmentEntity addCategory(Integer appointmentId, Integer categoryId) {
+        log.debug("Adding category {} to appointment {}", categoryId, appointmentId);
         AppointmentEntity appointmentEntity = appointmentRepository.findById(appointmentId)
                 .orElseThrow(AppointmentNotFoundException::new);
 
@@ -142,6 +161,7 @@ public class AppointmentService {
     }
 
     public AppointmentEntity removeCategory(Integer appointmentId, Integer categoryId) {
+        log.debug("Removing category {} from appointment {}", categoryId, appointmentId);
         AppointmentEntity appointmentEntity = appointmentRepository.findById(appointmentId)
                 .orElseThrow(AppointmentNotFoundException::new);
 
@@ -151,6 +171,16 @@ public class AppointmentService {
         appointmentEntity.removeCategory(categoryId);
 
         return appointmentRepository.save(appointmentEntity);
+    }
+
+    public void removeCategoriesByCategoryId(Integer categoryId) {
+        log.debug("Removing category {} from appointments.", categoryId);
+        Set<AppointmentEntity> appointmentEntities = appointmentRepository.getAppointmentEntitiesByCategoryIdsContaining(categoryId);
+
+        appointmentEntities.forEach(e -> e.removeCategory(categoryId));
+
+        appointmentRepository.saveAll(appointmentEntities);
+        // TODO: Maybe return changed list for FE?
     }
 
     @Transactional

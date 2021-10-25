@@ -1,6 +1,7 @@
 package hu.bme.aut.gassys.user.service;
 
 import feign.FeignException;
+import hu.bme.aut.gassys.appointment.AppointmentServiceIF;
 import hu.bme.aut.gassys.event.EventServiceIF;
 import hu.bme.aut.gassys.user.UserRegistrationDTO;
 import hu.bme.aut.gassys.user.data.UserRepository;
@@ -23,6 +24,8 @@ public class UserService {
     private final UserRepository userRepository;
 
     private final EventServiceIF eventServiceClient;
+
+    private final AppointmentServiceIF appointmentServiceClient;
 
     public Page<UserEntity> findAll(Pageable pageable) {
         return userRepository.findAll(pageable);
@@ -52,6 +55,7 @@ public class UserService {
         if (userRepository.existsById(id)) {
             try {
                 eventServiceClient.deleteEventByOrganiserId(id);
+                appointmentServiceClient.removeApplicantAndCategoryFromAllAppointment(id, null);
                 userRepository.deleteById(id);
             } catch (FeignException e) {
                 e.printStackTrace();

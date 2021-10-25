@@ -1,5 +1,6 @@
 package hu.bme.aut.gassys.category.presentation;
 
+import feign.FeignException;
 import hu.bme.aut.gassys.category.CategoryCreationDTO;
 import hu.bme.aut.gassys.category.CategoryDTO;
 import hu.bme.aut.gassys.category.data.CategoryEntity;
@@ -66,6 +67,9 @@ public class CategoryController {
         try {
             categoryService.deleteOne(id);
             return ResponseEntity.ok(HttpStatus.OK);
+        }
+        catch (FeignException e){
+            return ResponseEntity.internalServerError().build();
         }
         catch (CategoryException e){
             return ResponseEntity.noContent().build();

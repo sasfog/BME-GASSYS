@@ -1,5 +1,7 @@
 package hu.bme.aut.gassys.category.service;
 
+import feign.FeignException;
+import hu.bme.aut.gassys.appointment.AppointmentServiceIF;
 import hu.bme.aut.gassys.category.CategoryCreationDTO;
 import hu.bme.aut.gassys.category.CategoryDTO;
 import hu.bme.aut.gassys.category.data.CategoryEntity;
@@ -21,8 +23,10 @@ public class CategoryService {
 
     private CategoryRepository categoryRepository;
 
+    private AppointmentServiceIF appointmentServiceClient;
+
     public CategoryEntity create(CategoryCreationDTO dto){
-        log.debug("Creating new Category {}", dto);
+        log.debug("Creating new Category {}", dto.getName());
         CategoryEntity categoryEntity = new CategoryEntity();
         categoryEntity.setName(dto.getName());
         return categoryRepository.save(categoryEntity);
@@ -37,9 +41,16 @@ public class CategoryService {
     }
 
     public void deleteOne(Integer id){
-        log.debug("Creating category {}", id);
+        log.debug("Deleting category {}", id);
         try {
+            appointmentServiceClient.removeApplicantAndCategoryFromAllAppointment(null, id);
             categoryRepository.deleteById(id);
+        }
+        catch (FeignException e) {
+            e.printStackTrace();
+            log.error("Error during removal of category {} from appointments", id);
+            log.error("{}",e.getMessage());
+            throw e;
         }
         catch (EmptyResultDataAccessException e){
             log.warn("Category with id {} not found.", id);
@@ -48,7 +59,7 @@ public class CategoryService {
     }
 
     public void deleteAll() {
-        log.debug("Creating all categories");
+        log.debug("Deleting all categories");
         categoryRepository.deleteAll();
     }
 
@@ -59,7 +70,7 @@ public class CategoryService {
     public CategoryEntity modify(Integer id, CategoryDTO categoryDTO) {
         log.debug("Updating category {} to {}", id, categoryDTO.getName());
 
-        CategoryEntity entity = categoryRepository.findById(id).get();
+        CategoryEntity entity = categoryRepository.findById(id).orElseThrow(CategoryException::new);
         entity.setName(categoryDTO.getName());
         return categoryRepository.save(entity);
     }

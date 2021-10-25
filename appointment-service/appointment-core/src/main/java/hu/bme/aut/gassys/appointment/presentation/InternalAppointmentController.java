@@ -24,9 +24,9 @@ public class InternalAppointmentController {
     private final AppointmentMapper appointmentMapper;
 
     @DeleteMapping()
-    public ResponseEntity<HttpStatus> deleteAppointmentByEventId(@RequestParam Integer id){
+    public ResponseEntity<HttpStatus> deleteAppointmentByEventId(@RequestParam Integer eventId){
         try {
-            appointmentService.deleteByEventId(id);
+            appointmentService.deleteByEventId(eventId);
             return ResponseEntity.ok(HttpStatus.OK);
         }
         catch (AppointmentException e){
@@ -59,5 +59,14 @@ public class InternalAppointmentController {
             e.printStackTrace();
             return ResponseEntity.badRequest().build();
         }
+    }
+
+    @DeleteMapping("/remove")
+    public ResponseEntity<HttpStatus> removeApplicantAndCategoryFromAllAppointment(@RequestParam(required = false) Integer applicantId, @RequestParam(required = false) Integer categoryId) {
+        if (applicantId != null)
+            appointmentService.removeApplicantsByApplicantId(applicantId);
+        if (categoryId != null)
+            appointmentService.removeCategoriesByCategoryId(categoryId);
+        return ResponseEntity.ok().build();
     }
 }

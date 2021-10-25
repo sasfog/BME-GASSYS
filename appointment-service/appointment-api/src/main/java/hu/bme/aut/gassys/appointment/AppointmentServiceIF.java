@@ -20,4 +20,7 @@ public interface AppointmentServiceIF {
 
     @DeleteMapping("/event")
     ResponseEntity<HttpStatus> deleteAppointmentByEventIds(@RequestBody EventIdListDTO dto);
+
+    @DeleteMapping("/remove")
+    ResponseEntity<HttpStatus> removeApplicantAndCategoryFromAllAppointment(@RequestParam(required = false) Integer applicantId, @RequestParam(required = false) Integer categoryId);
 }
