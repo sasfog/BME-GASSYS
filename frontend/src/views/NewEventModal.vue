@@ -126,6 +126,7 @@
 <script>
 import categoryItem from "./CategoryItem.vue";
 import axios from "axios";
+import * as config from "../scripts/constants.js";
 export default {
   components: {
     categoryItem,
@@ -153,13 +154,14 @@ export default {
         color: this.selectedColour,
         capacity: this.capacity,
         description: this.description,
-      };
-      axios.post("https://localhost/api/event", postData)
-      .then(function (response) {
+      }
+
+      axios.post(config.eventEndpoint, postData)
+      .then(response => {
         console.log(response)
-        this.closeModal()
+        this.closeModal() 
       })
-      .catch(function (error) {
+      .catch(error => {
         console.log(error)
       });
     },

@@ -1,6 +1,6 @@
 <template>
 <nav class="navbar navbar-expand-lg navbar-light bg-light flex-column h-100">
-      <a class="navbar-brand" href="#">This is a navbar</a>
+      <a class="navbar-brand" href="#">BME-GASSYS</a>
       <button
         class="navbar-toggler"
         type="button"
