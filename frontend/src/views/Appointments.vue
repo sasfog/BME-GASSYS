@@ -13,10 +13,15 @@
         </th>
         <th></th>
       </tr>
+      <tr>
+      <td>05:30</td>
+      <calendarEvent v-if="eventsOfTheWeek && eventsOfTheWeek[0]" v-bind:event="eventsOfTheWeek[0]" v-on:click="showEvent(1)"></calendarEvent>
+      <eventModal v-bind:event="eventsOfTheWeek[0]" v-if="showEventModal" v-on:close-modal="hideEvent"></eventModal>
+      </tr>
       <tr v-for="time in hours" :key="time.value">
         <td>{{ time }}</td>
         <template v-for="(day, index) in datesOfWeek" :key="index">
-        <td v-if="true">{{daysOfWeek[index]}}</td>
+        <td>{{daysOfWeek[index]}}</td>
         </template>
         <td>{{ time }}</td>
       </tr>
@@ -63,11 +68,13 @@
 import newEventModal from "./NewEventModal.vue";
 import axios from "axios";
 import * as config from "../scripts/constants.js";
-//import calendarEvent from "./CalendarEvent.vue";
+import calendarEvent from "./CalendarEvent.vue";
+import eventModal from "./EventModal.vue";
 export default {
   components: {
     newEventModal,
-   // calendarEvent,
+    calendarEvent,
+    eventModal
   },
   data() {
     return {
@@ -86,7 +93,7 @@ export default {
         "Vasárnap",
       ],
       eventsOfTheWeek: null,
-      timetable: new Array(7)
+      showEventModal: false,
     };
   },
   mounted() {
@@ -94,9 +101,6 @@ export default {
   },
   created() {
     this.getEventsForWeek();
-    for (var i = 0; i < this.timetable.length; i++){
-      this.timetable[i] = new Array(this.hours.length)
-    }
   },
   methods: {
     generateHours() {
@@ -167,6 +171,12 @@ export default {
       }
       return null;
     },
+    showEvent() {
+      this.showEventModal = true 
+    },
+    hideEvent() {
+      this.showEventModal = false
+    }
   },
   computed: {
     currentWeek() {

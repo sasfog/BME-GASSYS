@@ -10,21 +10,31 @@
 
 <script>
 export default {
-  props: ["eventName", "organiserName", "capacity", "duration"],
+  props: [ 'event' ],
   computed: {
-      cellRowSpan() {
-          console.log(this.duration)
-          console.log(this.eventName)
-          console.log(this.organiserName)
-          console.log(this.capacity)
+    cellRowSpan() {
+      console.log(this.duration);
+      console.log(this.eventName);
+      console.log(this.organiserName);
+      console.log(this.capacity);
 
-          return Math.floor(parseInt(this.duration) / 30) + 1
-      }
+      return Math.floor(parseInt(this.duration) / 30) + 1;
+    },
+    capacity() {
+        return this.event['capacity']
+    },
+    eventName() {
+        return this.event['name']
+    },
+    organiserName() {
+        return this.event['organiserId']
+    },
+    duration(){
+        return this.event['duration']
+    }
   },
   data() {
-      return {
-
-      }
-  }
+    return {};
+  },
 };
 </script>

@@ -116,7 +116,9 @@
           ></categoryItem>
         </div>
         <div class="modal-footer d-flex justify-content-center">
-          <button class="btn btn-primary" v-on:click="addEvent">Új esemény</button>
+          <button class="btn btn-primary" v-on:click="addEvent">
+            Új esemény
+          </button>
         </div>
       </div>
     </div>
@@ -143,9 +145,9 @@ export default {
       var startDateTime = new Date(
         this.startDate + " " + this.startTime
       ).toJSON();
-      var durationArray = this.duration.split(":")
-      var formattedDuration = durationArray[0] * 60 + durationArray[1]
-      console.log(this.selectedColour)
+      var durationArray = this.duration.split(":");
+      var formattedDuration = durationArray[0] * 60 + durationArray[1];
+      console.log(this.selectedColour);
       var postData = {
         organiserId: 1,
         name: this.eventName,
@@ -154,16 +156,17 @@ export default {
         color: this.selectedColour,
         capacity: this.capacity,
         description: this.description,
-      }
+      };
 
-      axios.post(config.eventEndpoint, postData)
-      .then(response => {
-        console.log(response)
-        this.closeModal() 
-      })
-      .catch(error => {
-        console.log(error)
-      });
+      axios
+        .post(config.eventEndpoint, postData)
+        .then((response) => {
+          console.log(response);
+          this.closeModal();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
   },
   data() {
