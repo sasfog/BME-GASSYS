@@ -1,6 +1,6 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-light bg-light flex-column">
-    <a class="navbar-brand" href="#">BME-GASSYS</a>
+    <div class="navbar-brand mx-1" href="#"><b>BME-GASSYS</b></div>
     <button
       class="navbar-toggler"
       type="button"
@@ -13,6 +13,7 @@
     >
       <span class="navbar-toggler-icon"></span>
     </button>
+    <div class="h-50 mh-50 d-flex column justify-content-center"> 
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul
         class="navbar-nav flex-column align-items-center w-100"
@@ -27,7 +28,7 @@
               class="m-1 mx-3"
             />
             <div class="d-flex flex-column flex-wrap">
-              <div class="px-3">{{ navUserText }}</div>
+              <div class="px-3"><b>{{ navUserText }}</b></div>
             </div>
           </div>
         </li>
@@ -62,6 +63,8 @@
         </li>
       </ul>
     </div>
+    </div>
+    <div class="h-50 mh-50"></div>
   </nav>
 </template>
 
@@ -96,7 +99,7 @@ export default {
       return this.navUserText.split(" ");
     },
     navUserText() {
-      return this.$store.getters.StateUser;
+      return this.$store.getters.StateName;
     },
   },
 };

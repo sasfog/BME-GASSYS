@@ -1,5 +1,5 @@
 <template>
-  <div class="modal show" tabindex="-1" role="dialog">
+  <div class="modal show text-black" tabindex="-1" role="dialog">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header d-flex">
@@ -9,7 +9,7 @@
           <button
             type="button"
             class="btn-close"
-            v-on:click="closeModal"
+            v-on:click="close"
             aria-label="Close"
           ></button>
         </div>
@@ -55,10 +55,10 @@
 <script>
 export default {
   components: {},
-  props: ["event"],
+  props: ["event", "organiser", "appointment" ],
   methods: {
-    closeModal() {
-      this.$emit("close-modal");
+    close() {
+      this.$emit("close");
     },
   },
   data() {
@@ -66,7 +66,6 @@ export default {
   },
   computed: {
     eventName() {
-      console.log(this.event)
       return this.event.name;
     },
     eventDescription() {
@@ -87,10 +86,10 @@ export default {
       return new Date(endDateTime).toLocaleDateString();
     },
     eventCapacity() {
-      return this.event.capacity;
+      return this.appointment.applicantIds.length + "/" + this.event.capacity;
     },
     eventOrganiser(){
-      return this.event.organiserId;
+      return this.organiser.firstName + " " + this.organiser.lastName;
     }
   },
 };
