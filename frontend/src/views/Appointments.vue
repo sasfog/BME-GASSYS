@@ -1,8 +1,12 @@
 <template>
   <div class="appointments w-100 p-1">
-    <table class="table">
+  <div v-if="loading" class="d-flex justify-content-center">
+    <h1>Loading...</h1>
+    </div>
+    <table v-else class="table">
       <tr class="border border-dark">
-        <th class="border border-dark"></th>
+        <th class="border border-dark">
+        </th>
         <th
           class="border border-dark"
           v-for="(day, index) in datesOfWeek"
@@ -12,7 +16,8 @@
           <div class="text-center">{{ daysOfWeek[index] }}</div>
           <div class="text-center">{{ day }}</div>
         </th>
-        <th></th>
+        <th>
+        </th>
       </tr>
       <tr>
         <!--
@@ -53,6 +58,7 @@
         d-flex
         justify-content-center
       "
+      v-if="!loading"
     >
       <li class="page-item d-flex align-items-center">
         <button type="button" class="page-link" v-on:click="previousWeek">
@@ -130,6 +136,7 @@ export default {
       eventsForFirstHour: [],
       users: {},
       appointments: {},
+      loading: false
     };
   },
   mounted() {
@@ -177,6 +184,7 @@ export default {
       this.updateTimeTable();
     },
     updateTimeTable() {
+      this.loading = true
       this.getEventsForWeek();
       this.getUsersForWeek();
       this.getAppointmentsForWeek();
@@ -223,8 +231,6 @@ export default {
         .get(config.appointmentEndpoint)
         .then((response) => {
           var appointments = response.data["appointments"];
-          console.log("Appointments: ");
-          console.log(appointments);
           appointments.sort((a, b) => a.eventId - b.eventId);
           for (const appointment of appointments) {
             if (
@@ -234,8 +240,7 @@ export default {
               )
             )
               this.appointments[appointment.eventId] = appointment;
-            console.log("Appointments dict: ");
-            console.log(this.appointments);
+              this.loading = false
           }
         })
         .catch((error) => {
