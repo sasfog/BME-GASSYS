@@ -10,7 +10,7 @@ const routes = [
   {
     path: "/",
     name: "Home",
-    component: Login,
+    component: Login
   },
   {
     path: "/settings",
@@ -80,6 +80,8 @@ router.beforeEach((to, from, next) => {
       next('/')
     }
   }
+  else
+    next('/login')
 });
 
 export default router;
