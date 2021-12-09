@@ -67,11 +67,11 @@
       </li>
       <li class="page-item disabled d-flex flex-column" aria-current="page">
         <div class="d-flex justify-content-center page-link top-border">
-          {{
+          Week {{
             selectedWeek + currentWeek == 52
               ? selectedWeek + currentWeek
               : (selectedWeek + currentWeek) % 52
-          }}. hét
+          }}
         </div>
         <div
           class="
@@ -98,7 +98,7 @@
       class="btn btn-primary mt-2"
       v-on:click="displayModal"
     >
-      Új esemény
+      Add event
     </button>
     <newEventModal v-if="showModal" v-on:close-modal="hideModal">
     </newEventModal>
@@ -123,13 +123,13 @@ export default {
       showModal: false,
       selectedWeek: 0,
       daysOfWeek: [
-        "Hétfő",
-        "Kedd",
-        "Szerda",
-        "Csütörtök",
-        "Péntek",
-        "Szombat",
-        "Vasárnap",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday",
       ],
       eventsOfTheWeek: null,
       eventsForEveryHour: [],

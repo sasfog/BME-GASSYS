@@ -1,5 +1,5 @@
 <template>
-  <td v-bind:rowspan="cellRowSpan" class="text-white " v-bind:class="{ 'bg-dark': !isFull, 'bg-secondary': isFull}">
+  <td v-bind:rowspan="cellRowSpan" class="text-white " v-bind:class="{ 'bg-dark': !isFull, 'bg-secondary': isFull}"  v-on:click="showEvent">
     <div
       class="
         d-flex
@@ -7,7 +7,6 @@
         justify-content-center
         align-items-center
       "
-      v-on:click="showEvent"
     >
       <div v-if="organiser" >{{ fullName }}</div>
       <div>{{ eventName }}</div>

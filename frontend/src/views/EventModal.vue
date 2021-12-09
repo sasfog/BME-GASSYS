@@ -9,7 +9,7 @@
           <button
             type="button"
             class="btn-close"
-            v-on:click="close"
+            v-on:click="close($event)"
             aria-label="Close"
           ></button>
         </div>
@@ -57,7 +57,9 @@ export default {
   components: {},
   props: ["event", "organiser", "appointment" ],
   methods: {
-    close() {
+    close(event) {
+      if(event)
+        event.stopPropagation()
       this.$emit("close");
     },
   },
