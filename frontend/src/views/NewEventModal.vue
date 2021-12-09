@@ -172,11 +172,11 @@ export default {
   data() {
     return {
       categories: [
-        "category1",
-        "category2",
-        "category3",
-        "category4",
-        "category5",
+        "Boulder",
+        "Lead",
+        "Kezdő",
+        "Haladó",
+        
       ],
       selectedCategory: null,
       selectedColour: "#000000",

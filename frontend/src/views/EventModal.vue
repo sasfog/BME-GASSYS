@@ -26,11 +26,11 @@
           </div>
           <div class="d-flex w-50 align-items-center justify-content-around pe-2">
             <div class="d-flex my-2">
-              <b>{{ eventStartDateTime }}</b>
+              <b>{{ eventStartTime }}</b>
             </div>
             <b>-</b>
             <div class="d-flex my-2">
-              <b>{{ eventEndDateTime }}</b>
+              <b>{{ eventEndTime }}</b>
             </div>
           </div>
           <div class="d-flex w-50 align-items-center justify-content-around">
@@ -76,16 +76,16 @@ export default {
     eventCategories() {
       return this.event.categories;
     },
-    eventStartDateTime() {
-      return new Date(this.event.startDateTime).toLocaleDateString();
+    eventStartTime() {
+      return new Date(this.event.startDateTime).toLocaleTimeString();
     },
     eventDuration() {
       return this.event.duration;
     },
-    eventEndDateTime() {
+    eventEndTime() {
       var endDateTime =
         new Date(this.event.startDateTime).getTime() + this.eventDuration * 60 * 1000;
-      return new Date(endDateTime).toLocaleDateString();
+      return new Date(endDateTime).toLocaleTimeString();
     },
     eventCapacity() {
       return this.appointment.applicantIds.length + "/" + this.event.capacity;
