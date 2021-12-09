@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from "vue-router";
-import User from "../views/User.vue";
 import Settings from "../views/Settings.vue";
 import Appointments from "../views/Appointments.vue";
 import Login from "../views/Login.vue";
@@ -21,12 +20,6 @@ const routes = [
     //component: () =>
     //  import(/* webpackChunkName: "about" */ "../views/About.vue"),
     component: Settings,
-    meta: { requiresAuth: true },
-  },
-  {
-    path: "/user",
-    name: "User",
-    component: User,
     meta: { requiresAuth: true },
   },
   {
