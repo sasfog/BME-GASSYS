@@ -281,13 +281,9 @@ export default {
       return eventsForHour;
     },
     getEventsForEachHour() {
-      //console.log("Events of the week: ")
-      //console.log(this.eventsOfTheWeek)
       var eventsForEveryHour = [];
       for (const hour of this.hours) {
         var eventsInHour = this.getEventsForHour(hour, this.eventsOfTheWeek);
-        //console.log("Hour: " + hour)
-        //console.log(eventsInHour)
         var listForHour = [];
         for (var i = 0; i < 7; i++) {
           var eventsInHourInDay = this.getEventsForDay(
@@ -304,7 +300,6 @@ export default {
               )
             );
         }
-        //console.log(listForHour)
         eventsForEveryHour.push(listForHour);
       }
       this.eventsForEveryHour = eventsForEveryHour;
