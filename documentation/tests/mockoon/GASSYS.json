@@ -1,0 +1,202 @@
+{
+    "source": "mockoon:1.17.0",
+    "data": [
+        {
+            "type": "environment",
+            "item": {
+                "uuid": "2a3846c7-8cfe-4298-9d4b-37c86b0c5813",
+                "lastMigration": 19,
+                "name": "Szakdolgozat",
+                "endpointPrefix": "",
+                "latency": 0,
+                "port": 8003,
+                "hostname": "0.0.0.0",
+                "routes": [
+                    {
+                        "uuid": "e64a7ca3-82a7-45bd-8442-47868c36c2f6",
+                        "documentation": "api/event",
+                        "method": "post",
+                        "endpoint": "api/event",
+                        "responses": [
+                            {
+                                "uuid": "74e5ab09-3f3c-474f-acc5-e1eb1e000b12",
+                                "body": "{\n  \"answer\": \"success\"\n}",
+                                "latency": 0,
+                                "statusCode": 200,
+                                "label": "",
+                                "headers": [],
+                                "filePath": "",
+                                "sendFileAsBody": false,
+                                "rules": [],
+                                "rulesOperator": "OR",
+                                "disableTemplating": false,
+                                "fallbackTo404": false
+                            }
+                        ],
+                        "enabled": true,
+                        "randomResponse": false,
+                        "sequentialResponse": false
+                    },
+                    {
+                        "uuid": "1556fe66-2812-4443-9333-2e3145891365",
+                        "documentation": "api/event",
+                        "method": "get",
+                        "endpoint": "api/event",
+                        "responses": [
+                            {
+                                "uuid": "fa1f25ab-21b8-4e3e-9517-ee79908db1ab",
+                                "body": "{\n  \"events\": [\n    {\n      \"id\": 1,\n      \"name\": \"Kezdő edzés\",\n      \"organiserId\": 1,\n      \"startDateTime\": \"2021-12-07T09:00:00Z\",\n      \"capacity\": 1,\n      \"duration\": \"120\",\n      \"description\": \"A kezdő edzésen szívesen várjuk a teljesen kezdő mászókat, valamint azokat, akik már pár éve másznak, de eddig nem tudtak 5c+-nál nehezebb utakat megmászni. Edzéshez ziát biztosítunk, cipőt lehet bérelni, vagy sajátot hozni.\"\n    },\n    {\n      \"id\": 2,\n      \"name\": \"Haladó edzés\",\n      \"organiserId\": 2,\n      \"startDateTime\": \"2021-12-09T09:00:00Z\",\n      \"capacity\": 10,\n      \"duration\": \"120\",\n      \"description\": \"Az edzés azoknak a falmászóknak szól, akik rendszeresen tudnak 6a nehézségű bouldereket mászni.\"\n    }\n  ]\n}",
+                                "latency": 0,
+                                "statusCode": 200,
+                                "label": "",
+                                "headers": [],
+                                "filePath": "",
+                                "sendFileAsBody": false,
+                                "rules": [
+                                    {
+                                        "target": "query",
+                                        "modifier": "start_date",
+                                        "value": "06/12/2021",
+                                        "operator": "equals"
+                                    },
+                                    {
+                                        "target": "query",
+                                        "modifier": "end_date",
+                                        "value": "12/12/2021",
+                                        "operator": "equals"
+                                    }
+                                ],
+                                "rulesOperator": "AND",
+                                "disableTemplating": false,
+                                "fallbackTo404": false
+                            },
+                            {
+                                "uuid": "7d326f5b-4dd4-4dd6-b37e-532857fd41ef",
+                                "body": "{\n  \"events\": [\n    {\n      \"id\": 3,\n      \"name\": \"Kezdő edzés\",\n      \"organiserId\": 1,\n      \"startDateTime\": \"2021-12-14T09:00:00Z\",\n      \"capacity\": 10,\n      \"duration\": \"120\",\n      \"description\": \"A kezdő edzésen szívesen várjuk a teljesen kezdő mászókat, valamint azokat, akik már pár éve másznak, de eddig nem tudtak 5c+-nál nehezebb utakat megmászni. Edzéshez ziát biztosítunk, cipőt lehet bérelni, vagy sajátot hozni.\"\n    },\n    {\n      \"id\": 4,\n      \"name\": \"Haladó edzés\",\n      \"organiserId\": 1,\n      \"startDateTime\": \"2021-12-13T09:00:00Z\",\n      \"capacity\": 10,\n      \"duration\": \"60\",\n      \"description\": \"Az edzés azoknak a falmászóknak szól, akik rendszeresen tudnak 6a nehézségű bouldereket mászni.\"\n    },\n        {\n      \"id\": 5,\n      \"name\": \"Haladó edzés\",\n      \"organiserId\": 1,\n      \"startDateTime\": \"2021-12-13T08:00:00Z\",\n      \"capacity\": 10,\n      \"duration\": \"60\",\n      \"description\": \"Az edzés azoknak a falmászóknak szól, akik rendszeresen tudnak 6a nehézségű bouldereket mászni.\"\n    },\n        {\n      \"id\": 6,\n      \"name\": \"Haladó edzés\",\n      \"organiserId\": 2,\n      \"startDateTime\": \"2021-12-13T16:00:00Z\",\n      \"capacity\": 6,\n      \"duration\": \"120\",\n      \"description\": \"Az edzés azoknak a falmászóknak szól, akik rendszeresen tudnak 6a nehézségű bouldereket mászni.\"\n    },\n            {\n      \"id\": 7,\n      \"name\": \"Haladó edzés\",\n      \"organiserId\": 2,\n      \"startDateTime\": \"2021-12-16T16:00:00Z\",\n      \"capacity\": 6,\n      \"duration\": \"240\",\n      \"description\": \"Az edzés azoknak a falmászóknak szól, akik rendszeresen tudnak 6a nehézségű bouldereket mászni.\"\n    }\n  ]\n}",
+                                "latency": 0,
+                                "statusCode": 200,
+                                "label": " (copy)",
+                                "headers": [],
+                                "filePath": "",
+                                "sendFileAsBody": false,
+                                "rules": [
+                                    {
+                                        "target": "query",
+                                        "modifier": "start_date",
+                                        "value": "13/12/2021",
+                                        "operator": "equals"
+                                    },
+                                    {
+                                        "target": "query",
+                                        "modifier": "end_date",
+                                        "value": "19/12/2021",
+                                        "operator": "equals"
+                                    }
+                                ],
+                                "rulesOperator": "AND",
+                                "disableTemplating": false,
+                                "fallbackTo404": false
+                            }
+                        ],
+                        "enabled": true,
+                        "randomResponse": false,
+                        "sequentialResponse": false
+                    },
+                    {
+                        "uuid": "0842bf72-ba41-45bd-a933-829ae379cfd6",
+                        "documentation": "api/user",
+                        "method": "get",
+                        "endpoint": "api/user",
+                        "responses": [
+                            {
+                                "uuid": "0e2e52bb-ae4b-4579-a64a-cf680aff4d10",
+                                "body": "{\n  \"users\": [\n    {\n      \"id\": 1,\n      \"email\": \"nora.toth@teszt.com\",\n      \"birthdate\": \"2021-12-07T09:00:00Z\",\n      \"firstName\": \"Nóra\",\n      \"lastName\": \"Tóth\"\n    },\n    {\n      \"id\": 3,\n      \"email\": \"jakab.gipsz@teszt.com\",\n      \"birthdate\": \"2021-12-07T09:00:00Z\",\n      \"firstName\": \"Jakab\",\n      \"lastName\": \"Gipsz\"\n    },\n    {\n      \"id\": 2,\n      \"email\": \"electra.carmen@teszt.com\",\n      \"birthdate\": \"2021-12-07T09:00:00Z\",\n      \"firstName\": \"Electra\",\n      \"lastName\": \"Carmen\"\n    }\n  ]\n}",
+                                "latency": 0,
+                                "statusCode": 200,
+                                "label": "",
+                                "headers": [],
+                                "filePath": "",
+                                "sendFileAsBody": false,
+                                "rules": [],
+                                "rulesOperator": "AND",
+                                "disableTemplating": false,
+                                "fallbackTo404": false
+                            }
+                        ],
+                        "enabled": true,
+                        "randomResponse": false,
+                        "sequentialResponse": false
+                    },
+                    {
+                        "uuid": "1e629cdb-fc20-499a-99f8-1baceaf2cad2",
+                        "documentation": "api/appointment",
+                        "method": "get",
+                        "endpoint": "api/appointment",
+                        "responses": [
+                            {
+                                "uuid": "b98a27b8-fbfb-47f5-8ffd-b8b5b6be16df",
+                                "body": "{\n  \"appointments\": [\n    {\n      \"id\": 1,\n      \"eventId\": 1,\n      \"applicantIds\": [\n        2\n        ],\n      \"categoryIds\": [\n        1,\n        2,\n        3\n        ]\n    },\n    {\n      \"id\": 2,\n      \"eventId\": 2,\n      \"applicantIds\": [\n        ],\n      \"categoryIds\": [\n        1,\n        3\n        ]\n    },\n    {\n      \"id\": 3,\n      \"eventId\": 3,\n      \"applicantIds\": [\n        ],\n      \"categoryIds\": [\n        1,\n        2,\n        3\n        ]\n    },\n        {\n      \"id\": 4,\n      \"eventId\": 6,\n      \"applicantIds\": [\n        2,\n        1,\n        3,\n        5\n        ],\n      \"categoryIds\": [\n        1,\n        2,\n        3,\n        4\n        ]\n    },\n        {\n      \"id\": 5,\n      \"eventId\": 4,\n      \"applicantIds\": [\n        ],\n      \"categoryIds\": [\n        1,\n        2,\n        3\n        ]\n    },\n        {\n      \"id\": 6,\n      \"eventId\": 5,\n      \"applicantIds\": [\n        ],\n      \"categoryIds\": [\n        1,\n        2,\n        3\n        ]\n    },\n    {\n      \"id\": 7,\n      \"eventId\": 7,\n      \"applicantIds\": [\n        ],\n      \"categoryIds\": [\n        1,\n        2,\n        3,\n        4\n        ]\n    }\n  ]\n}",
+                                "latency": 0,
+                                "statusCode": 200,
+                                "label": "",
+                                "headers": [],
+                                "filePath": "",
+                                "sendFileAsBody": false,
+                                "rules": [],
+                                "rulesOperator": "AND",
+                                "disableTemplating": false,
+                                "fallbackTo404": false
+                            }
+                        ],
+                        "enabled": true,
+                        "randomResponse": false,
+                        "sequentialResponse": false
+                    }
+                ],
+                "proxyMode": false,
+                "proxyHost": "",
+                "proxyRemovePrefix": false,
+                "tlsOptions": {
+                    "enabled": false,
+                    "type": "CERT",
+                    "pfxPath": "",
+                    "certPath": "",
+                    "keyPath": "",
+                    "caPath": "",
+                    "passphrase": ""
+                },
+                "cors": true,
+                "headers": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    },
+                    {
+                        "key": "Access-Control-Allow-Origin",
+                        "value": "*"
+                    },
+                    {
+                        "key": "Access-Control-Allow-Methods",
+                        "value": "GET,POST,PUT,PATCH,DELETE,HEAD,OPTIONS"
+                    },
+                    {
+                        "key": "Access-Control-Allow-Headers",
+                        "value": "Content-Type, Origin, Accept, Authorization, Content-Length, X-Requested-With"
+                    }
+                ],
+                "proxyReqHeaders": [
+                    {
+                        "key": "",
+                        "value": ""
+                    }
+                ],
+                "proxyResHeaders": [
+                    {
+                        "key": "",
+                        "value": ""
+                    }
+                ]
+            }
+        }
+    ]
+}
