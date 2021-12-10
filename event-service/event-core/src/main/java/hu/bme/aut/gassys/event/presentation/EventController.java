@@ -17,6 +17,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.time.Instant;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping("/api/event")
 @Slf4j
@@ -98,5 +102,13 @@ public class EventController {
             log.error(e.getMessage());
             return ResponseEntity.badRequest().build();
         }
+    }
+
+    @GetMapping("/week")
+    public ResponseEntity<List<EventDTO>> getEventsForWeek(@RequestParam Instant startDate, @RequestParam Instant endDate) {
+        return ResponseEntity.ok(eventService.findEventsByWeek(startDate, endDate)
+                .stream()
+                .map(eventMapper::eventToEventDTO)
+                .collect(Collectors.toList()));
     }
 }

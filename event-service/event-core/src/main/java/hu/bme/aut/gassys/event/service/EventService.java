@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.Instant;
 import java.util.*;
 
 @Service
@@ -142,5 +143,8 @@ public class EventService {
         return eventRepository.save(entity);
     }
 
+    public List<EventEntity> findEventsByWeek(Instant startDate, Instant endDate) {
+        return eventRepository.getEventEntitiesByStartDateTimeBetween(startDate, endDate);
+    }
 
 }
