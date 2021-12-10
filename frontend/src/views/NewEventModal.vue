@@ -4,7 +4,7 @@
       <div class="modal-content">
         <div class="modal-header d-flex">
           <div class="d-flex justify-content-center w-100">
-            <h1>Új esemény</h1>
+            <h1>New Event</h1>
           </div>
           <button
             type="button"
@@ -15,7 +15,7 @@
         </div>
         <div class="modal-body d-flex flex-column justify-content-center">
           <div class="d-flex">
-            <label for="eventName">Név:</label>
+            <label for="eventName">Name:</label>
             <input
               class="ms-5 w-100"
               v-model="eventName"
@@ -23,14 +23,14 @@
               name="eventName"
             />
           </div>
-          <label class="my-1" for="description">Leírás:</label>
+          <label class="my-1" for="description">Description:</label>
           <textarea
             v-model="description"
             placeholder="Add a description.."
             name="description"
           />
           <div class="d-flex justify-content-center my-1">
-            <h3>Kezdés</h3>
+            <h3>Start time</h3>
           </div>
           <div
             id="kezdes-blokk"
@@ -38,7 +38,7 @@
           >
             <div class="d-flex flex-column w-50 pe-2">
               <div class="d-flex justify-content-between my-2">
-                <label for="date">Dátum:</label>
+                <label for="date">Date:</label>
                 <input
                   class="ms-3 w-60"
                   type="date"
@@ -47,7 +47,7 @@
                 />
               </div>
               <div class="d-flex justify-content-between my-2">
-                <label for="capacity">Férőhely:</label>
+                <label for="capacity">Capacity:</label>
                 <input
                   class="ms-3 w-60"
                   type="number"
@@ -59,7 +59,7 @@
             </div>
             <div class="d-flex flex-column w-50">
               <div class="d-flex justify-content-between my-2 ps-3">
-                <label for="start-time">Időpont:</label>
+                <label for="start-time">Start time:</label>
                 <input
                   class="ms-3"
                   type="time"
@@ -68,7 +68,7 @@
                 />
               </div>
               <div class="d-flex justify-content-between my-2 ps-3">
-                <label for="duration">Időtartam:</label>
+                <label for="duration">Duration:</label>
                 <input
                   class="ms-3"
                   type="time"
@@ -81,7 +81,7 @@
         </div>
         <div class="d-flex flex-row align-items-center">
           <div class="d-flex justify-content-between ps-3 w-50 pe-2">
-            <label for="category">Kategória:</label>
+            <label for="category">Category:</label>
             <select
               class="ms-3 w-60"
               name="category"
@@ -97,7 +97,7 @@
             </select>
           </div>
           <div class="ps-3 w-50 d-flex justify-content-between my-2 ps-3 pe-3">
-            <label for="colour">Szín:</label>
+            <label for="colour">Colour:</label>
             <input
               class="ms-3"
               name="colour"
@@ -117,7 +117,7 @@
         </div>
         <div class="modal-footer d-flex justify-content-center">
           <button class="btn btn-primary" v-on:click="addEvent">
-            Új esemény
+            Add Event
           </button>
         </div>
       </div>

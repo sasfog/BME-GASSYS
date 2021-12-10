@@ -15,7 +15,7 @@
         </div>
         <div class="modal-body d-flex flex-column justify-content-center align-items-center">
           <div class="d-flex w-50 align-items-center justify-content-around py-3">
-            <b>Szervező:</b>
+            <b>Organiser:</b>
             <b>{{ eventOrganiser}}</b>
           </div>
           <p class="border border-secondary" >{{ eventDescription }}</p>
@@ -35,7 +35,7 @@
           </div>
           <div class="d-flex w-50 align-items-center justify-content-around">
             <div class="d-flex justify-content-between my-2 ps-3">
-              <b>Férőhelyek:</b>
+              <b>Capacity:</b>
             </div>
             <div class="d-flex justify-content-between my-2 ps-3">
               <b>{{ eventCapacity }}</b>
@@ -44,7 +44,7 @@
         </div>
         <div class="modal-footer d-flex justify-content-center">
           <button class="btn btn-primary" v-on:click="addEvent">
-            Jelentkezés
+            Apply
           </button>
         </div>
       </div>
